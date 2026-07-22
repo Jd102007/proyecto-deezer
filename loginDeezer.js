@@ -1,4 +1,3 @@
-// --- Funciones para Cookies ---
 function setCookie(nombre, valor, dias) {
     let expira = "";
     if (dias) {
@@ -20,6 +19,15 @@ function getCookie(nombre) {
     return null;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const token = getCookie('session_token');
+    
+    
+    if (token) {
+        console.log("Sesión activa detectada. Redirigiendo...");
+        window.location.href = "dashboard.html"; // Cambia esto por el nombre de tu vista principal
+    }
+});
 
 let oscuroRecuperado = localStorage.getItem('modo-dark');
 let oscuroConstante = oscuroRecuperado ? JSON.parse(oscuroRecuperado) : 0;

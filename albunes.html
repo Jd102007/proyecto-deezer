@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deezer Manager - App</title>
+    <link rel="stylesheet" href="./styleDeezer.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Deezer Manager</h2>
+                <button id="darkSkin" class="Button_Modo_Oscuro">Modo Oscuro</button>
+            </div>
+
+            <section class="my-albums-section">
+                <h3>Mis Álbumes</h3>
+                
+
+                <div class="filter-group">
+                    <label for="filtro-rating">Filtrar por estrellas:</label>
+                    <select id="filtro-rating">
+                        <option value="todos">Todos</option>
+                        <option value="5">5 Estrellas</option>
+                        <option value="4">4 Estrellas</option>
+                        <option value="3">3 Estrellas</option>
+                        <option value="2">2 Estrellas</option>
+                        <option value="1">1 Estrella</option>
+                    </select>
+                </div>
+
+                
+                <div id="contenedor-favoritos" class="albums-grid">
+                
+                </div>
+            </section>
+
+            
+            <div class="sidebar-footer">
+                <button id="Cerrar" class="Cerrar">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        </main>
+
+    </div>
+    <script src="mockdata.js"></script>
+    <script src="misalbunes.js"></script>
+</body>
+</html>
