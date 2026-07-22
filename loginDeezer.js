@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (token) {
         console.log("Sesión activa detectada. Redirigiendo...");
-        window.location.href = "dashboard.html"; // Cambia esto por el nombre de tu vista principal
+        window.location.href = "albunes.html"; // Cambia esto por el nombre de tu vista principal
     }
 });
 
