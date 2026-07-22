@@ -1,102 +1,75 @@
-let datosRecuperados = localStorage.getItem('usuariosRegistrados');
-let listaUsuarios = datosRecuperados ? JSON.parse(datosRecuperados) : [];
-let oscuroRecuperado= localStorage.getItem('modo-dark');
-let oscuroConstante= oscuroRecuperado? JSON.parse(oscuroRecuperado) : null;
-const spinner = document.getElementById('spinner');
+// --- Funciones para Cookies ---
+function setCookie(nombre, valor, dias) {
+    let expira = "";
+    if (dias) {
+        const fecha = new Date();
+        fecha.setTime(fecha.getTime() + (dias * 24 * 60 * 60 * 1000));
+        expira = "; expires=" + fecha.toUTCString();
+    }
+    document.cookie = nombre + "=" + (encodeURIComponent(valor) || "") + expira + "; path=/; SameSite=Lax";
+}
 
+function getCookie(nombre) {
+    const nombreEQ = nombre + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nombreEQ) === 0) return decodeURIComponent(c.substring(nombreEQ.length, c.length));
+    }
+    return null;
+}
+
+
+let oscuroRecuperado = localStorage.getItem('modo-dark');
+let oscuroConstante = oscuroRecuperado ? JSON.parse(oscuroRecuperado) : 0;
+
+const spinner = document.getElementById('spinner');
+const elOscuro = document.getElementById('darkSkin');
 const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
-const elOscuro= document.getElementById('darkSkin');
-
-if (oscuroConstante=== null) {
-    oscuroConstante= 0;
+if (oscuroConstante === 1) {
+    document.body.classList.add("dark-mode");
 }
 
-if (oscuroConstante=== 1){
-    document.body.classList.toggle("dark-mode");
-    const estaEnDark = document.body.classList.contains("dark-mode");
-    console.log("¿Modo oscuro activo?:", estaEnDark);
-}
 
-document.getElementById("btn-ingresar").addEventListener('click', (e) => {
+document.getElementById("form-login").addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    let userIngresado = document.querySelector('input[type="text"]').value;
-    let contraseñaIngresada = document.querySelector('input[type="password"]').value;
-
-
-    let cuentaEncontrada = listaUsuarios.find(cuenta =>
-        cuenta.nombre === userIngresado && cuenta.contraseña === contraseñaIngresada
-    );
-
-    if (cuentaEncontrada) {
-        localStorage.setItem('cuentaActiva', JSON.stringify(cuentaEncontrada));
-        console.log(listaUsuarios);
-        
-    } else {
-        alert("Usuario o contraseña incorrectos");
-    }
-});
-document.getElementById("btn-registro").addEventListener('click', async (e) => {
-    e.preventDefault();
+    const inputUsuario = document.getElementById("usuario").value;
+    const inputPassword = document.getElementById("password").value;
 
     spinner.classList.remove('hidden');
-    document.getElementById("btn-registro").disabled = true;
-    try{
-    
-        await esperar(2000);
-        class cuenta {
-        constructor(nombre, contraseña, oscuro) {
-            this.nombre = nombre;
-            this.contraseña = contraseña;
-            this.oscuro = oscuro;
-            
-        }
-        }
-        const inputUsuario = document.getElementById("usuario");
-        const inputContraseña = document.getElementById("password");
-        const inputCedula = document.getElementById("CI");
-        const inputTlf = document.getElementById("telefono");
+    document.getElementById("btn-ingresar").disabled = true;
 
-        document.querySelector('#form-preguntas button').addEventListener('click', (e) => { 
-            e.preventDefault();
+    try {
+        await esperar(2000); 
 
-            let usuarioExtraido = inputUsuario.value;
-            let contraseñaExtraida = inputContraseña.value;
         
-            let user = new cuenta(
-                usuarioExtraido, 
-                contraseñaExtraida,  
-                0 
-                
-            );
+        const tokenSimulado = "authToken_" + btoa(inputUsuario + ":" + Date.now());
 
-            listaUsuarios.push(user);
-            localStorage.setItem('usuariosRegistrados', JSON.stringify(listaUsuarios));
         
-        
-        
-    })
-}finally{
-    spinner.classList.add('hidden');
-        document.getElementById("btn-registro").disabled = false;
-        alert(`¡Registro exitoso!\n`);
-}
+        setCookie('session_token', tokenSimulado, 1);
+        setCookie('usuario_activo', inputUsuario, 1);
+
+        console.log("¡Sesión iniciada! Token guardado:", getCookie('session_token'));
+
+    } catch (error) {
+        console.error("Error durante el login:", error);
+    } finally {
+        spinner.classList.add('hidden');
+        document.getElementById("btn-ingresar").disabled = false;
+    }
 });
+
 
 elOscuro.addEventListener("click", (e) => {
     e.preventDefault();
 
     document.body.classList.toggle("dark-mode");
-    if(oscuroConstante===0){
-        oscuroConstante=1;
-    }
-    else{
-        oscuroConstante=0;
-    }
+    oscuroConstante = document.body.classList.contains("dark-mode") ? 1 : 0;
     localStorage.setItem('modo-dark', JSON.stringify(oscuroConstante));
 
-    const estaEnDark = document.body.classList.contains("dark-mode");
-    console.log("¿Modo oscuro activo?:", estaEnDark);
+    console.log("¿Modo oscuro activo?:", document.body.classList.contains("dark-mode"));
 });
