@@ -69,6 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn("Acceso no autorizado. Redirigiendo a inicio...");
         window.location.href = "inicioDeezer.html";
     }
+    let oscuroRecuperado = localStorage.getItem('modo-dark');
+    let oscuroConstante = oscuroRecuperado ? JSON.parse(oscuroRecuperado) : 0;
+    const elOscuro = document.getElementById('darkSkin');
+    if (oscuroConstante === 1) {
+        document.body.classList.add("dark-mode");
+    }
 
     renderizarColeccion(obtenerFavoritos());
 
@@ -76,9 +82,19 @@ document.addEventListener('DOMContentLoaded', () => {
         filtrarPorCalificacion(e.target.value);
     });
 
-    document.getElementById('cerrar')?.addEventListener('click', () => {
+    document.getElementById('Cerrar')?.addEventListener('click', () => {
         eraseCookie('session_token');
         eraseCookie('usuario_activo');
         window.location.href = 'inicioDeezer.html';
     });
+});
+const elOscuro = document.getElementById('darkSkin');
+elOscuro.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    document.body.classList.toggle("dark-mode");
+    oscuroConstante = document.body.classList.contains("dark-mode") ? 1 : 0;
+    localStorage.setItem('modo-dark', JSON.stringify(oscuroConstante));
+
+    console.log("¿Modo oscuro activo?:", document.body.classList.contains("dark-mode"));
 });

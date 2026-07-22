@@ -7,22 +7,17 @@
     <link rel="stylesheet" href="./styleDeezer.css">
 </head>
 <body>
-
     <div class="app-container">
-        
-
+        <div class="Pagebuffer">
+            <h2>Deezer Manager</h2>
+            <button id="darkSkin" class="Button_Modo_Oscuro">Modo Oscuro</button>
+            <button id="Cerrar" class="Cerrar">Cerrar Sesión</button>
+        </div>
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2>Deezer Manager</h2>
-                <button id="darkSkin" class="Button_Modo_Oscuro">Modo Oscuro</button>
-            </div>
-
             <section class="my-albums-section">
                 <h3>Mis Álbumes</h3>
-                
-
                 <div class="filter-group">
-                    <label for="filtro-rating">Filtrar por estrellas:</label>
+                    <label for="filtro-rating">Filtrar por estrellas: </label>
                     <select id="filtro-rating">
                         <option value="todos">Todos</option>
                         <option value="5">5 Estrellas</option>
@@ -33,18 +28,12 @@
                     </select>
                 </div>
 
-                
-                <div id="contenedor-favoritos" class="albums-grid">
-                
-                </div>
+                <div id="contenedor-favoritos" class="albums-grid"></div>
             </section>
-
-            
-            <div class="sidebar-footer">
-                <button id="Cerrar" class="Cerrar">Cerrar Sesión</button>
-            </div>
         </aside>
-
+        <div class="mainContent">
+            <h2>[Reproductor de música y esas cosas :p]</h2>
+        </div>
         </main>
 
     </div>
