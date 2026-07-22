@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (token) {
         console.log("Sesión activa detectada. Redirigiendo...");
-        window.location.href = "albunes.html"; // Cambia esto por el nombre de tu vista principal
+        window.location.href = "albunes.html";
     }
 });
 
@@ -68,7 +68,11 @@ document.getElementById("form-login").addEventListener('submit', async (e) => {
     } finally {
         spinner.classList.add('hidden');
         document.getElementById("btn-ingresar").disabled = false;
+        window.location.href = "albunes.html";
+        
     }
+    
+    
 });
 
 
