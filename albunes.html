@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deezer Manager - App</title>
     <link rel="stylesheet" href="./styleDeezer.css">
 </head>
+
 <body>
     <div class="app-container">
         <div class="Pagebuffer">
@@ -32,12 +34,42 @@
             </section>
         </aside>
         <div class="mainContent">
-            <h2>[Reproductor de música y esas cosas :p]</h2>
+            <div class="search-section">
+                <form id="form-buscador" class="form-buscador">
+                    <input type="text" id="input-busqueda" placeholder="Buscar artista..." required>
+                    <button type="submit" id="btn-buscar">Buscar</button>
+                </form>
+            </div>
+
+            <div id="spinner-busqueda" class="spinner hidden"></div>
+            <div id="mensaje-estado" class="estado-mensaje hidden"></div>
+
+            <div id="resultados-busqueda" class="resultados-grid"></div>
+
+            <div id="detalle-artista" class="detalle-contenedor hidden">
+                <button id="btn-volver" class="Button_Modo_Oscuro btn-volver">⬅ Volver</button>
+                <div id="info-artista" class="info-artista"></div>
+                <h3>Álbumes</h3>
+                <div id="albumes-artista" class="albumes-list"></div>
+            </div>
+
+            <div id="reproductor-contenedor" class="reproductor-fijo hidden">
+                <div class="reproductor-info">
+                    <img id="reproductor-img" src="" alt="Portada">
+                    <div class="reproductor-textos">
+                        <p id="reproductor-titulo">Título</p>
+                        <p id="reproductor-artista">Artista</p>
+                    </div>
+                </div>
+                <audio id="reproductor-audio" controls name="media"></audio>
+                <button id="btn-cerrar-reproductor" class="btn-cerrar">✕</button>
+            </div>
         </div>
         </main>
 
     </div>
-    <script src="mockdata.js"></script>
-    <script src="misalbunes.js"></script>
+    <script src="misalbunes.js?v=3"></script>
+    <script src="buscador.js?v=2"></script>
 </body>
+
 </html>

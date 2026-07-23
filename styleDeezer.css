@@ -109,56 +109,60 @@ body {
     cursor: pointer;  
 }
 .subContent{
-    width: 65%; /* Tamaño base del padre */
-    height: 100%;
+    width: 90%; 
+    max-width: 400px;
+    height: auto;
     border-radius: 1em;
-    padding:1em;
+    padding:2em;
     margin-top: 11em;
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     background-color:var(--color-Table1);
     color: var(--color-Letras);
     display: flex;
+    flex-direction: column;
     gap: 2em;
-    flex-wrap: wrap;
     box-sizing: border-box; 
     justify-content: center;
+    align-items: center;
 }
 
 .mainContent{
-    width: 50%; /* Tamaño base del padre */
-    min-width:3em;
-    height: 100%;
+    width: 75%; 
+    min-width:300px;
+    height: auto;
+    min-height: 50vh;
     border-radius: 1em;
-    padding:1em;
+    padding: 2em;
     margin-top: 11em;
-    margin-left: 14em;
+    margin-left: 22%; /* Espacio para el sidebar lateral */
+    margin-bottom: 6em; /* Espacio para el reproductor fijo */
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     background-color:var(--color-Table1);
     color: var(--color-Letras);
     display: flex;
+    flex-direction: column; /* Apila los elementos verticalmente */
     gap: 2em;
-    flex-wrap: wrap;
     box-sizing: border-box; 
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .my-albums-section{
-  width: 20%; /* Tamaño base del padre */
-  min-width:12em;
-  height: 75%;
+  width: 20%; 
+  min-width:200px;
+  height: auto;
   border-radius: 1em;
-  padding:1em;
+  padding:1.5em;
   margin-top: 11em;
   position: fixed;
-  left: 0;
-  row-gap:0;
+  left: 1em;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   background-color:var(--color-Table1);
   color: var(--color-Letras);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1em;
   box-sizing: border-box; 
-  justify-content: left;
+  justify-content: flex-start;
 }
 
 .filter-group{
@@ -189,9 +193,10 @@ body {
   flex-direction: column;
   box-sizing: border-box;
   align-items: center; 
+  overflow-y: auto;
 }
 
-.hidden { display: none; }
+.hidden { display: none !important; }
 .spinner {
   border: 4px solid #f3f3f3;
   border-top: 4px solid #3498db;
@@ -204,3 +209,222 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }  
+
+/* Formulario de búsqueda */
+.form-buscador {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 2em;
+  width: 100%;
+  justify-content: center;
+}
+.form-buscador input {
+  padding: 0.8em;
+  border-radius: 0.5em;
+  border: 1px solid #ccc;
+  width: 60%;
+  font-size: 1rem;
+}
+.form-buscador button {
+  padding: 0.8em 1.5em;
+  border-radius: 0.5em;
+  border: none;
+  background-color: var(--color-boton);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.form-buscador button:hover {
+  background-color: rgb(0,0,0);
+}
+
+/* Resultados y tarjetas */
+.resultados-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  justify-content: center;
+  width: 100%;
+}
+.artist-card {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 1em;
+  padding: 1em;
+  text-align: center;
+  width: 150px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.dark-mode .artist-card {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.artist-card:hover {
+  transform: scale(1.05);
+}
+.artist-card img {
+  width: 100%;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+/* Detalles de artista y álbumes */
+.detalle-contenedor {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+.btn-volver {
+  align-self: flex-start;
+  margin-bottom: 1em;
+}
+.info-artista {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+.info-artista img {
+  width: 150px;
+  border-radius: 50%;
+}
+.albumes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+}
+.album-item {
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 1em;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.dark-mode .album-item {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.album-header {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  cursor: pointer;
+}
+.album-header img {
+  width: 80px;
+  height: 80px;
+  border-radius: 0.5em;
+}
+.track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding-left: 1em;
+  border-left: 2px solid var(--color-boton);
+}
+.track-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 0.5em;
+}
+.dark-mode .track-item {
+  background-color: rgba(0,0,0,0.5);
+}
+.btn-play {
+  background-color: var(--color-boton);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Reproductor fijo */
+.reproductor-fijo {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-bufer);
+  padding: 1em 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+  box-sizing: border-box;
+  z-index: 1000;
+}
+.reproductor-info {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  color: white;
+  width: 300px;
+}
+.reproductor-info img {
+  width: 50px;
+  height: 50px;
+  border-radius: 0.5em;
+}
+.reproductor-textos p {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+#reproductor-titulo {
+  font-weight: bold;
+}
+#reproductor-artista {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+.btn-cerrar {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.estado-mensaje {
+  text-align: center;
+  font-weight: bold;
+  padding: 2em;
+}
+
+/* Botón guardar en el álbum */
+.btn-guardar {
+    margin-left: auto;
+    padding: 0.5em 1em;
+    background-color: var(--color-boton);
+    color: white;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-guardar:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+/* Estilos para las estrellas de valoración */
+.star {
+  font-size: 24px;
+  color: #ccc; /* Estrella apagada (gris) */
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+.star:hover {
+  color: #f1c40f; /* Estrella al pasar el mouse */
+}
+.star.active {
+  color: #f1c40f; /* Estrella encendida (amarilla) */
+}
