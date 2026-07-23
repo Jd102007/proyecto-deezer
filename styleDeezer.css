@@ -14,7 +14,7 @@ body {
   margin: 0; 
   /* orden de los hijos */
   display: flex;
-  min-width:500px;
+  min-width:600px;
   flex-direction: column; 
   align-items: center; 
 }
@@ -32,7 +32,7 @@ body {
   width: 100%; /* Tamaño base del padre */
   height: 8%;
   min-height:6em;
-  min-width:500px;
+  min-width:600px;
   position: fixed;
   top:0px;
   left:0px; 
@@ -114,6 +114,7 @@ body {
     height: auto;
     border-radius: 1em;
     padding:2em;
+    margin-right:5em;
     margin-top: 11em;
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     background-color:var(--color-Table1);
@@ -127,14 +128,14 @@ body {
 }
 
 .mainContent{
-    width: 75%; 
-    min-width:300px;
+    width: 60%; 
+    min-width:4em;
     height: auto;
     min-height: 50vh;
     border-radius: 1em;
     padding: 2em;
     margin-top: 11em;
-    margin-left: 22%; /* Espacio para el sidebar lateral */
+    margin-left: clamp(14em, 30vw, 30%); /* Espacio para el sidebar lateral */
     margin-bottom: 6em; /* Espacio para el reproductor fijo */
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     background-color:var(--color-Table1);
@@ -148,7 +149,7 @@ body {
 
 .my-albums-section{
   width: 20%; 
-  min-width:200px;
+  min-width:12em;
   height: auto;
   border-radius: 1em;
   padding:1.5em;
@@ -310,6 +311,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1em;
+  flex-wrap: wrap;
   cursor: pointer;
 }
 .album-header img {
@@ -337,7 +339,7 @@ body {
 }
 .btn-play {
   background-color: var(--color-boton);
-  color: white;
+  color: var(--color-Letras);
   border: none;
   border-radius: 50%;
   width: 30px;
@@ -354,7 +356,7 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: var(--color-bufer);
+  background: var(--color-bufer);
   padding: 1em 2em;
   display: flex;
   align-items: center;
@@ -367,7 +369,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1em;
-  color: white;
+  color: var(--color-Letras);
   width: 300px;
 }
 .reproductor-info img {
@@ -389,7 +391,7 @@ body {
 .btn-cerrar {
   background: none;
   border: none;
-  color: white;
+  color: var(--color-Letras);
   font-size: 1.5rem;
   cursor: pointer;
 }
@@ -418,13 +420,13 @@ body {
 /* Estilos para las estrellas de valoración */
 .star {
   font-size: 24px;
-  color: #ccc; /* Estrella apagada (gris) */
+  color: #000000; /* Estrella apagada (gris) */
   cursor: pointer;
   transition: color 0.2s ease-in-out;
 }
 .star:hover {
-  color: #f1c40f; /* Estrella al pasar el mouse */
+  color: #0ff1ed; /* Estrella al pasar el mouse */
 }
 .star.active {
-  color: #f1c40f; /* Estrella encendida (amarilla) */
+  color: #ffff00; /* Estrella encendida (amarilla) */
 }
