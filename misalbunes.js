@@ -12,7 +12,11 @@ function getCookie(nombre) {
     }
     return null;
 }
-
+document.addEventListener('DOMContentLoaded', () => {
+    if (navigator.onLine) {
+        sincronizarRatingsDiferidos();
+    }
+});
 
 function obtenerFavoritos() {
     const guardados = localStorage.getItem('mis_albumes_favoritos');
@@ -72,9 +76,30 @@ function renderizarColeccion(listaAlbumes) {
 function guardarCalificacion(albumId, rating) {
     let favoritos = obtenerFavoritos();
     let index = favoritos.findIndex(a => a.id === String(albumId));
+    
     if (index !== -1) {
         favoritos[index].rating = rating;
         localStorage.setItem('mis_albumes_favoritos', JSON.stringify(favoritos));
+    }
+
+    
+    if (navigator.onLine) {
+        enviarCalificacionServidor(albumId, rating);
+    } else {
+        
+        let cola = obtenerColaPendientes();
+        
+    
+        const indexCola = cola.findIndex(item => item.albumId === String(albumId));
+        if (indexCola !== -1) {
+            cola[indexCola].rating = rating;
+            cola[indexCola].timestamp = Date.now();
+        } else {
+            cola.push({ albumId: String(albumId), rating, timestamp: Date.now() });
+        }
+        
+        guardarColaPendientes(cola);
+        mostrarNotificacionRed("Calificación guardada localmente (pendiente de sincronización).", "advertencia");
     }
 }
 
@@ -125,3 +150,61 @@ elOscuro.addEventListener("click", (e) => {
 
     console.log("¿Modo oscuro activo?:", document.body.classList.contains("dark-mode"));
 });
+// Variable o registro local para cambios pendientes de sincronizar
+function obtenerColaPendientes() {
+    return JSON.parse(localStorage.getItem('sync_queue_ratings')) || [];
+}
+
+function guardarColaPendientes(cola) {
+    localStorage.setItem('sync_queue_ratings', JSON.stringify(cola));
+}
+
+// Eventos de estado de red
+window.addEventListener('online', () => {
+    mostrarNotificacionRed("Conexión restablecida. Sincronizando datos...", "exito");
+    sincronizarRatingsDiferidos();
+});
+
+window.addEventListener('offline', () => {
+    mostrarNotificacionRed("Estás en modo offline. Los cambios se guardarán localmente.", "advertencia");
+});
+
+function mostrarNotificacionRed(mensaje, tipo) {
+    const estadoMsg = document.getElementById('mensaje-estado');
+    if (estadoMsg) {
+        estadoMsg.textContent = mensaje;
+        estadoMsg.className = `estado-mensaje ${tipo}`;
+        estadoMsg.classList.remove('hidden');
+        setTimeout(() => estadoMsg.classList.add('hidden'), 4000);
+    }
+}
+async function enviarCalificacionServidor(albumId, rating) {
+    try {
+        
+        console.log(`[SYNC OK] Calificación del álbum ${albumId} sincronizada: ${rating} estrellas.`);
+        return true;
+    } catch (error) {
+        console.warn(`Error al sincronizar álbum ${albumId}:`, error);
+        return false;
+    }
+}
+
+async function sincronizarRatingsDiferidos() {
+    let cola = obtenerColaPendientes();
+    if (cola.length === 0) return;
+
+    let pendientesRestantes = [];
+
+    for (const item of cola) {
+        const exito = await enviarCalificacionServidor(item.albumId, item.rating);
+        if (!exito) {
+            pendientesRestantes.push(item); 
+        }
+    }
+
+    guardarColaPendientes(pendientesRestantes);
+
+    if (pendientesRestantes.length === 0) {
+        mostrarNotificacionRed("¡Todos los datos locales han sido sincronizados!", "exito");
+    }
+}

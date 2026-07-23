@@ -50,6 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Buscador dinámico
     formBuscador.addEventListener('submit', async (e) => {
         e.preventDefault();
+    const query = inputBusqueda.value.trim();
+    if (!query) return;
+
+    if (!navigator.onLine) {
+        mostrarMensaje("Sin conexión a Internet. No se pueden realizar búsquedas en tiempo real.");
+        return;
+    }
+
+
+
         const query = inputBusqueda.value.trim();
         if (!query) return;
 
@@ -94,11 +104,19 @@ document.addEventListener('DOMContentLoaded', () => {
         artistas.forEach(artista => {
             const card = document.createElement('div');
             card.className = 'artist-card';
+            card.setAttribute('tabindex','0')
+            card.setAttribute('role','button')
             card.innerHTML = `
                 <img src="${artista.picture_medium || 'https://via.placeholder.com/150'}" alt="${artista.name}">
                 <h4>${artista.name}</h4>
             `;
             card.addEventListener('click', () => cargarDetalleArtista(artista));
+            card.addEventListener('keypress',(e)=>{
+                if(e.key==='Enter'||e.key===' '){
+                    e.preventDefault()
+                    cargarDetalleArtista(artista)
+                }
+            })
             resultadosGrid.appendChild(card);
         });
     }
@@ -143,6 +161,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const header = document.createElement('div');
             header.className = 'album-header';
+            header.setAttribute('tabindex','0')
+            header.setAttribute('role','button')
             header.innerHTML = `
                 <img src="${album.cover_medium || 'https://via.placeholder.com/150'}" alt="${album.title}">
                 <div>
@@ -189,27 +209,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const trackListContainer = document.createElement('div');
             trackListContainer.className = 'track-list hidden';
             
-            // Cargar tracks al hacer clic en el álbum
-            header.addEventListener('click', async () => {
-                if (trackListContainer.classList.contains('hidden')) {
-                    trackListContainer.classList.remove('hidden');
-                    if (trackListContainer.innerHTML === '') {
-                        trackListContainer.innerHTML = '<i>Cargando pistas...</i>';
-                        try {
-                            const res = await fetchDeezer(`https://api.deezer.com/album/${album.id}/tracks`);
-                            if (res.data) {
-                                renderizarTracks(res.data, trackListContainer, album, artistName);
-                            } else {
-                                trackListContainer.innerHTML = '<p>No hay pistas.</p>';
-                            }
-                        } catch (error) {
-                            trackListContainer.innerHTML = '<p>Error al cargar pistas.</p>';
-                        }
-                    }
+
+
+const alternarAlbum = async () => {
+    if (trackListContainer.classList.contains('hidden')) {
+        trackListContainer.classList.remove('hidden');
+        if (trackListContainer.innerHTML === '') {
+            trackListContainer.innerHTML = '<i>Cargando pistas...</i>';
+            try {
+                const res = await fetchDeezer(`https://api.deezer.com/album/${album.id}/tracks`);
+                if (res.data) {
+                    renderizarTracks(res.data, trackListContainer, album, artistName);
                 } else {
-                    trackListContainer.classList.add('hidden');
+                    trackListContainer.innerHTML = '<p>No hay pistas.</p>';
                 }
-            });
+            } catch (error) {
+                trackListContainer.innerHTML = '<p>Error al cargar pistas.</p>';
+            }
+        }
+    } else {
+        trackListContainer.classList.add('hidden');
+    }
+};
+
+header.addEventListener('click', alternarAlbum);
+header.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        alternarAlbum();
+    }
+});
 
             item.appendChild(header);
             item.appendChild(trackListContainer);
