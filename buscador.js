@@ -50,8 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Buscador dinámico
     formBuscador.addEventListener('submit', async (e) => {
         e.preventDefault();
-    const query = inputBusqueda.value.trim();
-    if (!query) return;
 
     if (!navigator.onLine) {
         mostrarMensaje("Sin conexión a Internet. No se pueden realizar búsquedas en tiempo real.");
